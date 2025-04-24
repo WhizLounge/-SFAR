@@ -17,7 +17,7 @@ public class DbInitializer
 
     private static void SeedData(StoreContext context)
     {
-        context.Database.Migrate();
+  context.Database.Migrate();
         if (context.Products.Any()) return;
         var products = new List<Product>
         {
