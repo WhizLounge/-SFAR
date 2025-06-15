@@ -7,7 +7,6 @@ import AppPagination from "../../app/shared/components/AppPagination";
 import { setPageNumber } from "./catalogSlice";
 
 
-
 export default function Catalog() {
   const productParams = useAppSelector(state => state.catalog);
   const { data, isLoading } = useFetchProductsQuery(productParams);
@@ -26,7 +25,7 @@ export default function Catalog() {
             <ProductList products={data.items} />
             <AppPagination
               metadata={data.pagination}
-              onPageChange={(page: number) => {dispatch(setPageNumber(page));
+              onPageChange ={(page: number) => {dispatch(setPageNumber(page));
                 window.scrollTo({top: 0, behavior:'smooth'})
 
               }} />
@@ -34,10 +33,7 @@ export default function Catalog() {
         ):(
           <Typography variant="h5">There are no results for this filter </Typography>
         )}
-
-
-
-      </Grid2>
+     </Grid2>
     </Grid2>
   )
 }

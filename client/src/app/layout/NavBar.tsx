@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { setDarkMode } from "./uiSlice";
 import { Link } from "react-router-dom";
 import { useFetchBasketQuery } from "../../features/basket/basketApi";
+import UserMenu from "./UserMenu";
+import { useUserInfoQuery } from "../../features/account/accountApi";
  const midLinks =[
     {title:'catalog',path: '/catalog'},
     {title:'about',path: '/about'},
@@ -24,6 +26,7 @@ import { useFetchBasketQuery } from "../../features/basket/basketApi";
    color:'baecf9'
 }}
 export default function NavBar() {
+    const {data: user } = useUserInfoQuery();
     const{isLoading,darkMode}= useAppSelector(state =>state.ui);
     const dispatch = useAppDispatch();
     const {data: basket} = useFetchBasketQuery();
@@ -58,17 +61,21 @@ export default function NavBar() {
     </Badge> 
 
 </IconButton>
-<List sx={{display:'flex'}}>
-{rightLinks.map(({title,path})=>(
-        <ListItem
-        component={NavLink}
-        to={path}
-        key={path} 
-        sx={navStyles}>
-{title.toUpperCase()}
-        </ListItem>
-      ))}
-</List>  
+
+{user ? ( 
+    <UserMenu user={user}/>
+) :(<List sx={{display:'flex'}}>
+    {rightLinks.map(({title,path})=>(
+            <ListItem
+            component={NavLink}
+            to={path}
+            key={path} 
+            sx={navStyles}>
+    {title.toUpperCase()}
+            </ListItem>
+          ))}
+    </List>  )}
+
 </Box>
 
     
