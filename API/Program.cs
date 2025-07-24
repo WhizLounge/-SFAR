@@ -3,7 +3,7 @@ using API.Entities;
 using API.Middleware;
 using API.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;   
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(opt =>
 {
-   opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+   opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddCors();
 builder.Services.AddTransient<ExceptionMiddleware>();
@@ -29,6 +29,10 @@ builder.Services.AddIdentityApiEndpoints<User>(opt =>
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors(opt =>
 {
    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:3000");
@@ -38,5 +42,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<User>(); // api/login
-DbInitializer.InitDb(app);
+app.MapFallbackToController("Index", "Fallback"); // FallbackController.Index 
+await DbInitializer.InitDb(app);
 app.Run();

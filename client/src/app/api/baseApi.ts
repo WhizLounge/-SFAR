@@ -11,23 +11,26 @@ const customBaseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_URL,
   credentials: 'include'
 });
-type ErrorResponse = string | { title: string } | { error: string[] };
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
+
+type ErrorResponse = | string | {title: string} | {errors: string[]};
+const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
+ 
 export const baseQueryWithErrorHandling = async (
   args: string | FetchArgs,
   api: BaseQueryApi,
   extraOptions: object
 ) => {
   api.dispatch(startLoading());
-  await sleep();
+  if(import.meta.env.DEV) await sleep();
   const result = await customBaseQuery(args, api, extraOptions);
   api.dispatch(stopLoading());
   if (result.error) {
     console.log(result.error);
+
     const originalStatus =
       result.error.status === "PARSING_ERROR" && result.error.originalStatus
         ? result.error.originalStatus
-        : result.error.status;
+        : result.error.status
 
     const responseData = result.error.data as ErrorResponse;
 
