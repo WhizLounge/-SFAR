@@ -1,5 +1,7 @@
 {
     "csharp.preview.improvedLaunchExperience": false,
     "dotnet.automaticallySyncWithActiveItem": false,
-    "dotnet.preferVisualStudioCodeFileSystemWatcher": false
+    "dotnet.preferVisualStudioCodeFileSystemWatcher": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/5fedc8f6-62ee-4d13-bdad-0495dda0fb49/resourceGroups/Soberforareason_group/providers/Microsoft.Web/sites/Soberforareason",
+    "appService.deploySubpath": "API/bin/Publish"
 }
