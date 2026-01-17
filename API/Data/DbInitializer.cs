@@ -24,7 +24,7 @@ public class DbInitializer
     {
         context.Database.Migrate();
 
-        if (!userManager.Users.Any())
+       /* if (!userManager.Users.Any())
         {   
             var user = new User
             {
@@ -41,7 +41,36 @@ public class DbInitializer
             };
             await userManager.CreateAsync(admin, "Pa$$w0rd");
             await userManager.AddToRolesAsync(admin, ["Member", "Admin"]);
-        }
+        }*/
+
+        // Seed Bob
+var bob = await userManager.FindByEmailAsync("bob@test.com");
+if (bob == null)
+{
+    bob = new User
+    {
+        UserName = "bob@test.com",
+        Email = "bob@test.com"
+    };
+
+    await userManager.CreateAsync(bob, "Pa$$w0rd");
+    await userManager.AddToRoleAsync(bob, "Member");
+}
+
+// Seed Admin
+var admin = await userManager.FindByEmailAsync("admin@test.com");
+if (admin == null)
+{
+    admin = new User
+    {
+        UserName = "admin@test.com",
+        Email = "admin@test.com"
+    };
+
+    await userManager.CreateAsync(admin, "Pa$$w0rd");
+    await userManager.AddToRolesAsync(admin, new[] { "Member", "Admin" });
+}
+
         if (context.Products.Any()) return;
         var products = new List<Product>
         {
