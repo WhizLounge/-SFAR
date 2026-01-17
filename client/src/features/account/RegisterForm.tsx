@@ -14,8 +14,23 @@ export default function RegisterForm() {
             resolver: zodResolver(registerSchema)
         }
     )
-    const onSubmit = async(data: RegisterSchema)=>{
-        await registerUser(data);
+    const onSubmit = async(data: RegisterSchema) => {
+        try {
+            await registerUser(data).unwrap();
+        } catch (error) {
+            const apiError = error as {message: string};
+            if(apiError.message && typeof apiError.message === 'string'){
+                const errorArray = apiError.message.split(',');
+
+               errorArray.forEach(e =>{
+                if(e.includes('Password')){
+                    setError('password',{message: e})
+                } else if(e.includes('Email')){
+                    setError('email',{message: e})
+                }
+               })
+                
+        }
     }
   return (<Container component={Paper} maxWidth='sm' sx={{borderRadius: 3}}>
     <Box display='flex' flexDirection='column' alignItems='center' margin='8'>
@@ -69,4 +84,9 @@ export default function RegisterForm() {
 
 
 </Container>)
+}
+    function setError(arg0: string, arg1: { message: string; }) {
+        throw new Error("Function not implemented.");
+    }
+
 }

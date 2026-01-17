@@ -3,6 +3,9 @@ export type User = {
     roles: string[];
 }
 export type Address ={
+    types: string[];
+    brands: string[];
+    brands: string[];
     name: string
     line1: string
     line2?: string | null

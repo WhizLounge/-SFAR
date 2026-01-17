@@ -8,9 +8,11 @@ import { useLazyUserInfoQuery, useLoginMutation } from "./accountApi";
 
 
 export default function LoginForm() {
+  
   const [login, {isLoading}] = useLoginMutation();
   const [fetchUserInfo] = useLazyUserInfoQuery();
   const location = useLocation();
+  
   const {register, handleSubmit, formState: {errors}}= useForm<LoginSchema>({
     mode: 'onTouched',
     resolver: zodResolver(loginSchema)
@@ -57,7 +59,7 @@ export default function LoginForm() {
                 error={!!errors.password}
                 helperText={errors.password?.message}/>
 
-                <Button disabled=    {isLoading} variant="contained" type="submit">
+                <Button disabled={isLoading} variant="contained" type="submit">
                     Sign in
 
                 </Button>
